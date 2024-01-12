@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="../dist/output.css" rel="stylesheet">
+		<script src="./main.js"></script>
+		<title>Waifu</title>
+		<style>
+			/* Hide the scrollbar */
+			::-webkit-scrollbar {
+			display: none; /* Hide the scrollbar in webkit (Chrome, Safari, Edge) */
+			}
+		</style>
+	</head>
+	<body class="test bg-white dark:bg-black-gray transition ease-in dark:ease-out duration-1000">
+		<!-- header -->
+		<h1 class="text-3xl font-bold bg-sky dark:bg-black transition ease-in dark:ease-out duration-700">
+			<header>			
+				<nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+				  <div class="flex lg:flex-1">
+					<a class="-m-1.5 p-1.5" onclick="change_theme_color_local()">
+					  <span class="sr-only">Your Company</span>
+					  <img id="theme_mode" class="h-12 w-auto flex-none items-center justify-center rounded-full bg-gray-50 hover:cursor-pointer ring-2 hover:ring-black dark:hover:ring-white dark:ring-black ring-sky" src="" alt="" onclick="change_theme_color()">
+					</a>
+				  </div>
+				  <div class="flex lg:hidden">
+					<button type="button" onclick="OpenMobileMenu()" class="-m-2.5 inline-flex items-center justify-center p-2.5 rounded-lg bg-gray-50 dark:text-white group-hover:bg-white group-hover:text-black hover:cursor-pointer ring-2 hover:ring-black dark:hover:ring-white dark:ring-black ring-sky">
+					  <span class="sr-only">Open main menu</span>
+					  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+					  </svg>
+					</button>
+				  </div>
+				  <div class="flex items-center justify-center w-72 mx-auto relative">
+					<input 
+						type="text"
+						placeholder="Search Tag..." 
+						class="bg-white dark:bg-black-gray ring-2 dark:ring-white dark:text-white text-black p-2 ring-black rounded-xl placeholder-black dark:placeholder-white w-72 focus:outline-0 focus:ring pr-10 text-base"
+						id="ChatInput"
+					>
+					<img 
+						id="SendImage"
+						src="images/coming_out.gif" 
+						alt="Image" 
+						class="cursor-pointer absolute right-2 h-8 dark:hover:ring-white ring-2 rounded-lg hover:ring-black ring-white dark:ring-black-gray"
+						onclick="console.log('searched')"
+						onmouseover="this.src='images/searching.gif'"
+						onmouseout="
+							sleep(4000).then(() => { this.src='images/coming_out.gif' });
+						"
+						onmousedown="this.className = 'cursor-pointer absolute right-2 h-8 dark:hover:ring-white ring rounded-lg hover:ring-black ring-white dark:ring-black-gray'"
+						onmouseup="
+						this.className = 'cursor-pointer absolute right-2 h-8 dark:hover:ring-white ring-2 rounded-lg hover:ring-black ring-white dark:ring-black-gray'
+						this.src='images/ok.gif'
+						"
+					>
+				</div>
+				  <div class="hidden lg:flex lg:flex-1 lg:justify-end dark:text-white text-black">
+					<!-- DropDown Menu -->
+					<div class="relative">
+						<button type="button" id="HeaderDropDownButton" class="flex items-center gap-x-1 text-xl font-semibold leading-6 dark:text-white" aria-expanded="false" onclick="DropDownMenu('HeaderDropDownMenu', 'HeaderDropDownButton', 'fixed', 'absolute', false, 'MenuArrow' )">
+						  Tags
+						  <svg class="h-5 w-5 flex-none" id="MenuArrow" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+							<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+						  </svg>
+						</button>
+				
+						<!--
+						  'Robot' flyout menu, show/hide based on flyout menu state.
+				
+						  Entering: "transition ease-out duration-200"
+							From: "opacity-0 translate-y-1"
+							To: "opacity-100 translate-y-0"
+						  Leaving: "transition ease-in duration-150"
+							From: "opacity-100 translate-y-0"
+							To: "opacity-0 translate-y-1"
+						-->
+  
+						<!--
+						  DROP DOWN
+						-->
+  
+						<div id="HeaderDropDownMenu"class="fixed -left-72 top-full z-10 mt-3 w-screen max-w-sm overflow-hidden rounded-3xl bg-white dark:bg-black-gray shadow-lg ring-1 ring-sky dark:ring-white transition ease-in duration-150 opacity-0 translate-y-1">
+						  <div class="p-4">
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Waifu
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Maid
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<!-- <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path> -->
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Marin-Kitagawa
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Mori-Colliope
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Raiden-Shogun
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Oppai
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Selfies
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Uniform
+								  </span>
+								  </a>
+								</div>
+							</div>
+							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
+										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+									</svg>																		  
+								</div>
+								<div class="flex-auto">
+								  <span class="block font-semibold dark:text-white text-xl inline-flex">
+									Gifs
+								  </span>
+								  </a>
+								</div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				  </div>
+				</nav>
+				<!-- Mobile menu, show/hide based on menu open state. -->
+				<div class="lg:hidden hidden" role="dialog" aria-modal="true" id="MobileMenu">
+				  <!-- Background backdrop, show/hide based on slide-over state. -->
+				  <div class="absolute inset-0 z-10"></div>
+				  <div class="absolute inset-y-0 right-0 z-10 w-full bg-white-sky dark:bg-black-gray overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-sky dark:sm:ring-white transition ease-in dark:ease-out duration-1000">
+					<div class="flex items-center justify-between">
+					  <a class="-m-1.5 p-1.5">
+						<span class="sr-only dark:text-white">Your Company</span>
+					  </a>
+					  <button type="button" onclick="CloseMobileMenu()" class="-m-2.5 rounded-lg p-2.5 ring-2 hover:ring-black dark:hover:ring-white dark:ring-black-gray ring-white-sky">
+						<span class="sr-only dark:text-white">Close menu</span>
+						<svg class="h-6 w-6 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+						  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					  </button>
+					</div>
+					<div class="mt-6 flow-root">
+					  <div class="-my-6 divide-y divide-gray-500/10">
+						<div class="space-y-2 py-6">
+						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Features</a>
+						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Tutorials</a>
+						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Company</a>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </header>			  
+		  </h1>
+		<!-- body -->
+		<div id="body" class="grid grid-cols-5 grid-rows-6">
+
+		</div>
+	</body>
+</html>
+
+<!-- var ctx3 = document.getElementById('chart3').getContext('2d');
+      var chart3 = new Chart(ctx3, {
+        type: 'line',
+        data: data,
+        options: {
+          aspectRatio: 1.75,
+          layout: {
+            padding: 14
+          },
+          legend: {
+            labels: {
+              fontColor: '#ccc',
+              generateLabels: generateLabels,
+              usePointStyle: true
+            }
+          },
+          tooltips: {
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            titleFontColor: '#000',
+            bodyFontColor: '#000'
+          },
+          scales: {
+            xAxes: [{
+              gridLines: {
+                color: 'rgba(255, 255, 255, 0.2)',
+                zeroLineColor: 'rgba(255, 255, 255, 0.5)'
+              },
+              ticks: {
+                fontColor: '#ccc'
+              }
+            }],
+            yAxes: [{
+              gridLines: {
+                color: 'rgba(255, 255, 255, 0.2)',
+                zeroLineColor: 'rgba(255, 255, 255, 0.5)'
+              },
+              ticks: {
+                fontColor: '#ccc'
+              }
+            }]
+          },
+          plugins: plugginOpts
+        }
+      }); -->
