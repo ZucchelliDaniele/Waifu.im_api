@@ -1,8 +1,11 @@
 "use strict"
 
 var HeaderDropDownMenu = true //true opened false closed
-var tags = []
-var included_tags = []
+var tags = ""
+var included_tags = ""
+var external_tags = ""
+var images = []
+var isMobileView
 
 document.addEventListener("DOMContentLoaded", function () {
     if (!window.location.pathname.includes("login.html")) {
@@ -104,7 +107,7 @@ function DropDownMenu(dropdownMenuID, dropdownButtonID, from, to, IsMobileMenu =
   }
 
 function checkScreenSize() {
-    const isMobileView = window.matchMedia('(max-width: 1023px)').matches;
+    isMobileView = window.matchMedia('(max-width: 1023px)').matches;
 
     if (isMobileView && localStorage.getItem("screen_mode") != "mobile") {
         localStorage.setItem("screen_mode", "mobile");
@@ -122,7 +125,7 @@ window.addEventListener('resize', checkScreenSize);
 // Call the function on initial page load
 checkScreenSize();
 
-function getImage(tags = "", included_tags="") {
+function getImage(tags = "", included_tags="", is_nsfw=false) {
     const apiUrl = 'https://api.waifu.im/search';
     const params = {
       height: '>=2000',
@@ -134,6 +137,9 @@ function getImage(tags = "", included_tags="") {
     }
     if(included_tags !== "") {
         params.included_tags = included_tags
+    }
+    if(is_nsfw) {
+        params.included_tags = "hentai"
     }
   
     const queryParams = new URLSearchParams(params);
@@ -152,10 +158,11 @@ function getImage(tags = "", included_tags="") {
       });
 }
   
-  // Example usage
-  getImage()
+function load_images() {
+  getImage(tags, included_tags, false)
     .then(data => {
       // Process the data as needed
+      images = data.images
       console.log(data.images);
       createCards()
     })
@@ -163,19 +170,83 @@ function getImage(tags = "", included_tags="") {
       // Handle errors
       console.error('Error:', error.message);
     });
+}
+load_images()
 
 function createCards() {
-    for(var rows = 0; rows < 5; rows++) {
+  var index = 0
+  var rows_number
+  if(isMobileView) {
+    rows_number = 15
+  }
+  else {
+    rows_number = 6
+  }
+  document.getElementById("body").innerHTML = ""
+    for(var rows = 0; rows < rows_number; rows++) {
         var row = document.createElement("div")
-        for(var cols = 0; cols < 6; cols++) {
+        var columns_number
+        if(isMobileView) {
+          row.className = "grid grid-cols-2"
+          columns_number = 2
+        }
+        else {
+          row.className = "grid grid-cols-5"
+          columns_number = 5
+        }
+        for(var cols = 0; cols < columns_number; cols++) {
+          if(index >= images.length) break 
+          document.getElementById("body").className = "grid grid-rows-"+rows+1
             var card = document.createElement("div")
-            var span = document.createElement("span")
-            span.className = "text-center"
-            span.innerHTML = "Card"
-            card.appendChild(span)
-            card.className = "m-3 rounded-lg shadow-xl text-center bg-white-sky dark:bg-black dark:text-white-gray"
+            var img = document.createElement("img")
+            img.src = images[index].url
+            img.style.objectFit = "cover";
+            img.className = "rounded-lg h-full w-full"
+            img.loading = "eager";
+            card.appendChild(img)
+            card.id = index
+            card.className = "overflow-hidden m-3 rounded-lg text-center h-fit hover:cursor-pointer shadow-2xl dark:hover:ring-white hover:ring-sky hover:ring"
+            card.onclick = function() {
+              window.open(images[this.id].url, "_blank");
+            }
             row.appendChild(card)
+            index++
         }
         document.getElementById("body").appendChild(row)
     }
+}
+
+function mobile_set_tag(tag) {
+  tags = ""
+  included_tags = tag
+  load_images()
+}
+
+function Set_tags(id) {
+  if(document.getElementById(id).classList.value == "hidden") {
+    document.getElementById("waifu").classList.value = "hidden"
+    document.getElementById("maid").classList.value = "hidden"
+    document.getElementById("marin-kitagawa").classList.value = "hidden"
+    document.getElementById("raiden-shogun").classList.value = "hidden"
+    document.getElementById("oppai").classList.value = "hidden"
+    document.getElementById("selfies").classList.value = "hidden"
+    document.getElementById("uniform").classList.value = "hidden"
+    document.getElementById("hentai").classList.value = "hidden"
+    document.getElementById(id).classList.value = ""
+    included_tags = id
+  }else {
+    document.getElementById(id).classList.value = "hidden"
+    included_tags=""
+    tags=""
+  }
+  console.log(included_tags)
+  load_images()
+}
+
+function set_tag(tag) {
+  tags = tag
+  if(tag == "waifu" || tag == "maid" || tag == "marin-kitagawa" || tag == "raiden-shogun" || tag == "oppai" || tag == "selfies" || tag == "uniform" || tag == "hentai" || tag == "ero" || tag == "ass" || tag == "milf" || tag == "oral" || tag == "paizuri" || tag == "ecchi") {
+    included_tags = tag
+  }
+  load_images()
 }

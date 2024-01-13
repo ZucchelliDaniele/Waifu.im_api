@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="../dist/output.css" rel="stylesheet">
-		<script src="./main.js"></script>
+		<script defer src="./main.js"></script>
 		<title>Waifu</title>
 		<style>
 			/* Hide the scrollbar */
@@ -19,32 +19,24 @@
 			<header>			
 				<nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
 				  <div class="flex lg:flex-1">
-					<a class="-m-1.5 p-1.5" onclick="change_theme_color_local()">
+					<a class="-m-1.5 p-1.5">
 					  <span class="sr-only">Your Company</span>
-					  <img id="theme_mode" class="h-12 w-auto flex-none items-center justify-center rounded-full bg-gray-50 hover:cursor-pointer ring-2 hover:ring-black dark:hover:ring-white dark:ring-black ring-sky" src="" alt="" onclick="change_theme_color()">
+					  <img id="theme_mode" class="h-12 w-auto flex-none items-center justify-center rounded-full bg-gray-50 hover:cursor-pointer ring-2 hover:ring-blue dark:hover:ring-white dark:ring-black ring-sky" src="" alt="" onclick="change_theme_color()">
 					</a>
-				  </div>
-				  <div class="flex lg:hidden">
-					<button type="button" onclick="OpenMobileMenu()" class="-m-2.5 inline-flex items-center justify-center p-2.5 rounded-lg bg-gray-50 dark:text-white group-hover:bg-white group-hover:text-black hover:cursor-pointer ring-2 hover:ring-black dark:hover:ring-white dark:ring-black ring-sky">
-					  <span class="sr-only">Open main menu</span>
-					  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-					  </svg>
-					</button>
 				  </div>
 				  <div class="flex items-center justify-center w-72 mx-auto relative">
 					<input 
 						type="text"
 						placeholder="Search Tag..." 
 						class="bg-white dark:bg-black-gray ring-2 dark:ring-white dark:text-white text-black p-2 ring-black rounded-xl placeholder-black dark:placeholder-white w-72 focus:outline-0 focus:ring pr-10 text-base"
-						id="ChatInput"
+						id="TagInput"
 					>
 					<img 
 						id="SendImage"
 						src="images/coming_out.gif" 
 						alt="Image" 
 						class="cursor-pointer absolute right-2 h-8 dark:hover:ring-white ring-2 rounded-lg hover:ring-black ring-white dark:ring-black-gray"
-						onclick="console.log('searched')"
+						onclick="input_search()"
 						onmouseover="this.src='images/searching.gif'"
 						onmouseout="
 							sleep(4000).then(() => { this.src='images/coming_out.gif' });
@@ -56,6 +48,14 @@
 						"
 					>
 				</div>
+				<div class="flex lg:hidden">
+					<button type="button" onclick="OpenMobileMenu()" class="-m-2.5 inline-flex items-center justify-center p-2.5 rounded-lg bg-gray-50 dark:text-white group-hover:bg-white group-hover:text-black hover:cursor-pointer ring-2 hover:ring-black dark:hover:ring-white dark:ring-black ring-sky">
+					  <span class="sr-only">Open main menu</span>
+					  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+					  </svg>
+					</button>
+				  </div>
 				  <div class="hidden lg:flex lg:flex-1 lg:justify-end dark:text-white text-black">
 					<!-- DropDown Menu -->
 					<div class="relative">
@@ -83,11 +83,11 @@
   
 						<div id="HeaderDropDownMenu"class="fixed -left-72 top-full z-10 mt-3 w-screen max-w-sm overflow-hidden rounded-3xl bg-white dark:bg-black-gray shadow-lg ring-1 ring-sky dark:ring-white transition ease-in duration-150 opacity-0 translate-y-1">
 						  <div class="p-4">
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('waifu')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="waifu" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -97,11 +97,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('maid')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="maid" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -111,11 +111,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('marin-kitagawa')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<!-- <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path> -->
+										<path class="hidden" id="marin-kitagawa" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -125,25 +125,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('raiden-shogun')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-									</svg>																		  
-								</div>
-								<div class="flex-auto">
-								  <span class="block font-semibold dark:text-white text-xl inline-flex">
-									Mori-Colliope
-								  </span>
-								  </a>
-								</div>
-							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="raiden-shogun" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -153,11 +139,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('oppai')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="oppai" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -167,11 +153,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('selfies')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="selfies" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -181,11 +167,11 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('uniform')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="uniform" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
@@ -195,16 +181,16 @@
 								  </a>
 								</div>
 							</div>
-							<div class="hover:cursor-pointer group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-								<div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
-									<svg class="h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+							<div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
+								<div onclick="Set_tags('hentai')" class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 dark:text-white dark:group-hover:bg-white group-hover:bg-white-sky group-hover:text-black">
+									<svg class="hover:cursor-pointer h-6 w-6 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 										<rect x="2" y="3" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"></rect>
-										<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+										<path class="hidden" id="hentai" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
 									</svg>																		  
 								</div>
 								<div class="flex-auto">
 								  <span class="block font-semibold dark:text-white text-xl inline-flex">
-									Gifs
+									Hentai
 								  </span>
 								  </a>
 								</div>
@@ -223,7 +209,7 @@
 					  <a class="-m-1.5 p-1.5">
 						<span class="sr-only dark:text-white">Your Company</span>
 					  </a>
-					  <button type="button" onclick="CloseMobileMenu()" class="-m-2.5 rounded-lg p-2.5 ring-2 hover:ring-black dark:hover:ring-white dark:ring-black-gray ring-white-sky">
+					  <button type="button" onclick="CloseMobileMenu()" class="-m-2.5 rounded-lg p-2.5 ring-2 hover:ring-black dark:hover:ring-white dark:ring-black-gray ring-white-sky mt-0.5">
 						<span class="sr-only dark:text-white">Close menu</span>
 						<svg class="h-6 w-6 dark:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 						  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -233,9 +219,14 @@
 					<div class="mt-6 flow-root">
 					  <div class="-my-6 divide-y divide-gray-500/10">
 						<div class="space-y-2 py-6">
-						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Features</a>
-						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Tutorials</a>
-						  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:bg-gray-50">Company</a>
+						  <a onclick="mobile_set_tag('waifu')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Waifu</a>
+						  <a onclick="mobile_set_tag('maid')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Maid</a>
+						  <a onclick="mobile_set_tag('marin-kitagawa')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Marin-Kitagawa</a>
+						  <a onclick="mobile_set_tag('raiden-shogun')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Raiden-Shogun</a>
+						  <a onclick="mobile_set_tag('oppai')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Oppai</a>
+						  <a onclick="mobile_set_tag('selfies')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Selfies</a>
+						  <a onclick="mobile_set_tag('uniform')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Uniform</a>
+						  <a onclick="mobile_set_tag('hentai')" class="hover:cursor-pointer -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 dark:text-white hover:underline hover:bg-gray-50">Hentai</a>
 						</div>
 					  </div>
 					</div>
@@ -244,53 +235,20 @@
 			  </header>			  
 		  </h1>
 		<!-- body -->
-		<div id="body" class="grid grid-cols-5 grid-rows-6">
+		<div id="body" class="grid grid-rows-6">
 
 		</div>
 	</body>
-</html>
-
-<!-- var ctx3 = document.getElementById('chart3').getContext('2d');
-      var chart3 = new Chart(ctx3, {
-        type: 'line',
-        data: data,
-        options: {
-          aspectRatio: 1.75,
-          layout: {
-            padding: 14
-          },
-          legend: {
-            labels: {
-              fontColor: '#ccc',
-              generateLabels: generateLabels,
-              usePointStyle: true
+	<script>
+		document.getElementById('TagInput').addEventListener('keyup', function(event) {
+            // Check if the Enter key (keyCode 13) is pressed
+            if (event.key == "Enter") {
+                input_search()
             }
-          },
-          tooltips: {
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            titleFontColor: '#000',
-            bodyFontColor: '#000'
-          },
-          scales: {
-            xAxes: [{
-              gridLines: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                zeroLineColor: 'rgba(255, 255, 255, 0.5)'
-              },
-              ticks: {
-                fontColor: '#ccc'
-              }
-            }],
-            yAxes: [{
-              gridLines: {
-                color: 'rgba(255, 255, 255, 0.2)',
-                zeroLineColor: 'rgba(255, 255, 255, 0.5)'
-              },
-              ticks: {
-                fontColor: '#ccc'
-              }
-            }]
-          },
-          plugins: plugginOpts
-        }
-      }); -->
+        });
+		function input_search() {
+			set_tag(document.getElementById('TagInput').value);
+			document.getElementById('TagInput').value = "";
+		}
+	</script>
+</html>
